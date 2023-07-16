@@ -22,6 +22,7 @@ const post = (path, payload) => new Promise((resolve, reject) => {
 });
 
 exports.handler = async function(event) {
+  console.log("Loading feed: " + event.RSS_FEED);
   let feed = await parser.parseURL(event.RSS_FEED);
   console.log("Populating from " + feed.title + " for last 8 hours");
 
@@ -34,7 +35,7 @@ exports.handler = async function(event) {
       community_id: event.COMMUNITY_ID,
       language_id: event.LANGUAGE_ID,
       url: item.link,
-      body: item.content,
+      body: item.contentSnippet,
       auth: process.env.LEMMY_JWT
     }));
   });
