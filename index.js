@@ -4,7 +4,7 @@ const parser = new Parser();
 
 const post = (path, payload) => new Promise((resolve, reject) => {
     const options = { ...{
-      host: 'TODO:url:instance',
+      host: process.env.LEMMY_URL,
       port: 443,
       headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ exports.handler = async function(event) {
       language_id: 'TODO:language_id',
       url: item.link,
       body: item.content,
-      auth: "TODO:jwt"
+      auth: process.env.LEMMY_JWT
     }));
   });
   console.log("Creating " + postsToCreate.length + " posts");
