@@ -22,22 +22,23 @@ const post = (path, payload) => new Promise((resolve, reject) => {
 });
 
 exports.handler = async function(event) {
-    console.log("Loading feed: " + event.RSS_FEED);
-    let feed = await parser.parseURL(event.RSS_FEED);
-    console.log("Populating from " + feed.title + " for last 8 hours");
-
+    console.log("Logging in with user: " + process.env.LEMMY_USER);
     let auth = JSON.parse(await post('/api/v3/user/login', {
         username_or_email: process.env.LEMMY_USER,
         password: process.env.LEMMY_PASS
     }));
 
-    let currentPosts = await parser.parseURL('/feeds/c/' + event.COMMUNITY_NAME + '.xml?sort=New');
+    console.log("Pulling current posts for community: " + event.COMMUNITY_NAME);
+    let currentPosts = await parser.parseURL(process.env.LEMMY_URL + '/feeds/c/' + event.COMMUNITY_NAME + '.xml?sort=New');
     let postTitles = currentPosts.items.map(post => post.title);
 
+    console.log("Loading feed: " + event.RSS_FEED);
+    let feed = await parser.parseURL(event.RSS_FEED);
+    console.log("Populating from " + feed.title + " for last 8 hours");
     let postsToCreate = [];
     feed.items.forEach(item => {
         //Prevent reposts based on title
-        if(!postTitles.contains(item.title){
+        if(!postTitles.contains(item.title)){
             //Create a post promise for each new entry
             postsToCreate.push(post('/api/v3/post', {
                 name: item.title,
