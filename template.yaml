@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+
+Parameters:
+  Prefix:
+    Description: Prefix to prepend to all AWS resource names
+    Type: String
+  LemmyURL:
+    Type: String
+  LemmyJWT:
+    Type: String
+    
+Resources:
+  LemmyFeederFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: 
+        Target: !Join
+          - '-'
+          - - !Ref Prefix
+            - 'lemmy-feeder'
+      CodeUri: src
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Timeout: 300
+      Environment:
+        Variables:
+          LEMMY_URL: !Ref LemmyURL
+          LEMMY_JWT: !Ref LemmyJWT
+  LemmyFeederPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt LemmyFeederFunction.Arn
+      Principal: !Ref 'AWS::AccountId'
+      Action: lambda:InvokeFunction
