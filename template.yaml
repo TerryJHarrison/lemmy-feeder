@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: "AWS::Serverless-2016-10-31"
 
 Parameters:
-  Prefix:
+  ResourcePrefix:
     Description: Prefix to prepend to all AWS resource names
     Type: String
   LemmyURL:
@@ -17,7 +17,7 @@ Resources:
       FunctionName: 
         Target: !Join
           - '-'
-          - - !Ref Prefix
+          - - !Ref ResourcePrefix
             - 'lemmy-feeder'
       CodeUri: ./
       Handler: index.handler
@@ -31,5 +31,5 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !GetAtt LemmyFeederFunction.Arn
-      Principal: !Ref 'AWS::AccountId'
+      Principal: !Ref AWS::AccountId
       Action: lambda:InvokeFunction
