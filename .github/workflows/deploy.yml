@@ -21,6 +21,7 @@ jobs:
       RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
       LEMMY_URL: ${{ secrets.LEMMY_URL }}
       LEMMY_JWT: ${{ secrets.LEMMY_JWT }}
+    
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
