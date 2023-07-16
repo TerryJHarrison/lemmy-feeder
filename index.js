@@ -22,7 +22,7 @@ const post = (path, payload) => new Promise((resolve, reject) => {
 });
 
 exports.handler = async function(event) {
-  let feed = await parser.parseURL('TODO:url:feed');
+  let feed = await parser.parseURL(event.RSS_FEED);
   console.log("Populating from " + feed.title + " for last 8 hours");
 
   let postsToCreate = [];
@@ -31,8 +31,8 @@ exports.handler = async function(event) {
     //create a post promise for each item
     postsToCreate.push(post('/api/v3/post', {
       name: item.title,
-      community_id: 'TODO:community_id',
-      language_id: 'TODO:language_id',
+      community_id: event.COMMUNITY_ID,
+      language_id: event.LANGUAGE_ID,
       url: item.link,
       body: item.content,
       auth: process.env.LEMMY_JWT
