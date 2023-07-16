@@ -17,6 +17,10 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
+      LEMMYY_URL: ${{ secrets.LEMMY_URL }}
+      LEMMYY_JWT: ${{ secrets.LEMMY_JWT }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -28,10 +32,6 @@ jobs:
           aws-region: us-east-1
 
       - name: Build and deploy
-        env:
-          RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
-          LEMMYY_URL: ${{ secrets.LEMMY_URL }}
-          LEMMYY_JWT: ${{ secrets.LEMMY_JWT }}
         run: |
           sam build --use-container
           sam package --s3-bucket deploy.harrison.enterprises --output-template-file ./packaged.yaml --region us-east-1
