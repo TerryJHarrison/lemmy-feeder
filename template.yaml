@@ -15,10 +15,10 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: 
-        Target: !Join
-          - '-'
-          - - !Ref ResourcePrefix
-            - 'lemmy-feeder'
+      - Target: !Join
+        - '-'
+        - - !Ref ResourcePrefix
+          - 'lemmy-feeder'
       CodeUri: ./
       Handler: index.handler
       Runtime: nodejs18.x
