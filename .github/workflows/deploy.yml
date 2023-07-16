@@ -28,7 +28,11 @@ jobs:
           aws-region: us-east-1
 
       - name: Build and deploy
+        env:
+          RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
+          LEMMYY_URL: ${{ secrets.LEMMY_URL }}
+          LEMMYY_JWT: ${{ secrets.LEMMY_JWT }}
         run: |
           sam build --use-container
           sam package --s3-bucket deploy.harrison.enterprises --output-template-file ./packaged.yaml --region us-east-1
-          sam deploy --template-file ./packaged.yaml --stack-name "fp-lemmy-feeder" --capabilities CAPABILITY_IAM --region us-east-1 --no-fail-on-empty-changeset
+          sam deploy --template-file ./packaged.yaml --stack-name "fp-lemmy-feeder" --capabilities CAPABILITY_IAM --region us-east-1 --no-fail-on-empty-changeset --parameter-overrides "LemmyURL=$LEMMY_URL,LemmyJWT=$LEMMY_JWT,ResourcePrefix=$RESOURCE_PREFIX"
