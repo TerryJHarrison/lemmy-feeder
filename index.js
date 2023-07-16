@@ -40,15 +40,15 @@ const httpGet = (path) => new Promise((resolve, reject) => {
 });
 
 exports.handler = async function(event) {
+    console.log("Pulling current posts for community ID: " + event.COMMUNITY_ID);
+    let currentPosts = JSON.parse(await httpGet('/api/v3/post/list?community_id=' + event.COMMUNITY_ID + '&limit=50&sort=New'));
+    let postLinks = currentPosts.posts.map(entry => entry.post.url);
+
     console.log("Logging in with user: " + process.env.LEMMY_USER);
     let auth = JSON.parse(await httpPost('/api/v3/user/login', {
         username_or_email: process.env.LEMMY_USER,
         password: process.env.LEMMY_PASS
     }));
-
-    console.log("Pulling current posts for community ID: " + event.COMMUNITY_ID);
-    let currentPosts = await httpGet('api/v3/post/list?community_id=' + event.COMMUNITY_ID + '&limit=50&sort=New');
-    let postLinks = currentPosts.posts.map(entry => entry.post.url);
 
     console.log("Loading feed: " + event.RSS_FEED);
     let feed = await parser.parseURL(event.RSS_FEED);
