@@ -37,7 +37,7 @@ exports.handler = async function(event) {
     console.log("Populating from " + feed.title + " for last 8 hours");
     let postsToCreate = [];
     feed.items.forEach(item => {
-        //Prevent reposts based on title
+        //Prevent reposts based on link
         if(!postLinks.includes(item.link)){
             //Create a post promise for each new entry
             postsToCreate.push(post('/api/v3/post', {
