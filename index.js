@@ -29,8 +29,8 @@ exports.handler = async function(event) {
     }));
 
     console.log("Pulling current posts for community: " + event.COMMUNITY_NAME);
-    let currentPosts = await parser.parseURL('https://' + process.env.LEMMY_URL + '/feeds/c/' + event.COMMUNITY_NAME + '.xml?sort=New');
-    let postTitles = currentPosts.items.map(post => post.title);
+    let currentPosts = await parser.parseURL('https://' + process.env.LEMMY_URL + '/feeds/c/' + event.COMMUNITY_NAME + '.xml');
+    let postLinks = currentPosts.items.map(post => post.link);
 
     console.log("Loading feed: " + event.RSS_FEED);
     let feed = await parser.parseURL(event.RSS_FEED);
@@ -38,7 +38,7 @@ exports.handler = async function(event) {
     let postsToCreate = [];
     feed.items.forEach(item => {
         //Prevent reposts based on title
-        if(!postTitles.includes(item.title)){
+        if(!postLinks.includes(item.link)){
             //Create a post promise for each new entry
             postsToCreate.push(post('/api/v3/post', {
                 name: item.title,
