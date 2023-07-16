@@ -7,7 +7,9 @@ Parameters:
     Type: String
   LemmyURL:
     Type: String
-  LemmyJWT:
+  LemmyUser:
+    Type: String
+  LemmyPass:
     Type: String
     
 Resources:
@@ -22,7 +24,8 @@ Resources:
       Environment:
         Variables:
           LEMMY_URL: !Ref LemmyURL
-          LEMMY_JWT: !Ref LemmyJWT
+          LEMMY_USER: !Ref LemmyUser
+          LEMMY_PASS: !Ref LemmyPass
   LemmyFeederPermission:
     Type: AWS::Lambda::Permission
     Properties:
