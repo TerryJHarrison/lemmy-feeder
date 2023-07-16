@@ -19,7 +19,7 @@ Resources:
           - '-'
           - - !Ref Prefix
             - 'lemmy-feeder'
-      CodeUri: src
+      CodeUri: ./
       Handler: index.handler
       Runtime: nodejs18.x
       Timeout: 300
