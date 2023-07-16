@@ -20,7 +20,8 @@ jobs:
     env:
       RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
       LEMMY_URL: ${{ secrets.LEMMY_URL }}
-      LEMMY_JWT: ${{ secrets.LEMMY_JWT }}
+      LEMMY_USER: ${{ secrets.LEMMY_USER }}
+      LEMMY_PASS: ${{ secrets.LEMMY_PASS }}
     
     steps:
       - name: Check out repository code
