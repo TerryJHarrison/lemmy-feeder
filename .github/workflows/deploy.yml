@@ -18,11 +18,14 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      RESOURCE_PREFIX: ${{ secrets.RESOURCE_PREFIX }}
+      AWS_DEPLOY_BUCKET: ${{ secrets.AWS_DEPLOY_BUCKET }}
+      AWS_DEPLOY_REGION: ${{ secrets.AWS_DEPLOY_REGION }}
+      AWS_DEPLOY_ROLE: ${{ secrets.AWS_DEPLOY_ROLE }}
+      AWS_RESOURCE_PREFIX: ${{ secrets.AWS_RESOURCE_PREFIX }}
       LEMMY_URL: ${{ secrets.LEMMY_URL }}
       LEMMY_USER: ${{ secrets.LEMMY_USER }}
       LEMMY_PASS: ${{ secrets.LEMMY_PASS }}
-    
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -30,11 +33,11 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::388474961170:role/github-actions-oidc
-          aws-region: us-east-1
+          role-to-assume: "$AWS_DEPLOY_ROLE"
+          aws-region: "$AWS_DEPLOY_REGION"
 
       - name: Build and deploy
         run: |
           sam build --use-container
-          sam package --s3-bucket deploy.harrison.enterprises --output-template-file ./packaged.yaml --region us-east-1
-          sam deploy --template-file ./packaged.yaml --stack-name "fp-lemmy-feeder" --capabilities CAPABILITY_IAM --region us-east-1 --no-fail-on-empty-changeset --parameter-overrides LemmyURL="$LEMMY_URL" LemmyUser="$LEMMY_USER" LemmyPass="$LEMMY_PASS" ResourcePrefix="$RESOURCE_PREFIX"
+          sam package --s3-bucket "$AWS_DEPLOY_BUCKET" --output-template-file ./packaged.yaml --region "$AWS_DEPLOY_REGION"
+          sam deploy --template-file ./packaged.yaml --stack-name "$AWS_RESOURCE_PREFIX"-lemmy-feeder --capabilities CAPABILITY_IAM --region "$AWS_DEPLOY_REGION" --no-fail-on-empty-changeset --parameter-overrides LemmyURL="$LEMMY_URL" LemmyUser="$LEMMY_USER" LemmyPass="$LEMMY_PASS" ResourcePrefix="$RESOURCE_PREFIX"
