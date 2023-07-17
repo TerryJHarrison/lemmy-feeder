@@ -40,4 +40,4 @@ jobs:
         run: |
           sam build --use-container
           sam package --s3-bucket "$AWS_DEPLOY_BUCKET" --output-template-file ./packaged.yaml --region "$AWS_DEPLOY_REGION"
-          sam deploy --template-file ./packaged.yaml --stack-name "$AWS_RESOURCE_PREFIX"-lemmy-feeder --capabilities CAPABILITY_IAM --region "$AWS_DEPLOY_REGION" --no-fail-on-empty-changeset --parameter-overrides LemmyURL="$LEMMY_URL" LemmyUser="$LEMMY_USER" LemmyPass="$LEMMY_PASS" ResourcePrefix="$RESOURCE_PREFIX"
+          sam deploy --template-file ./packaged.yaml --stack-name "$AWS_RESOURCE_PREFIX"-lemmy-feeder --capabilities CAPABILITY_IAM --region "$AWS_DEPLOY_REGION" --no-fail-on-empty-changeset --parameter-overrides LemmyURL="$LEMMY_URL" LemmyUser="$LEMMY_USER" LemmyPass="$LEMMY_PASS" ResourcePrefix="$AWS_RESOURCE_PREFIX"
