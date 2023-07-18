@@ -18,12 +18,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      AWS_DEPLOY_BUCKET: ${{ secrets.AWS_DEPLOY_BUCKET }}
-      AWS_DEPLOY_REGION: ${{ secrets.AWS_DEPLOY_REGION }}
-      AWS_DEPLOY_ROLE: ${{ secrets.AWS_DEPLOY_ROLE }}
-      AWS_RESOURCE_PREFIX: ${{ secrets.AWS_RESOURCE_PREFIX }}
-      LEMMY_URL: ${{ secrets.LEMMY_URL }}
-      LEMMY_USER: ${{ secrets.LEMMY_USER }}
+      AWS_DEPLOY_BUCKET: ${{ env.AWS_DEPLOY_BUCKET }}
+      AWS_DEPLOY_REGION: ${{ env.AWS_DEPLOY_REGION }}
+      AWS_RESOURCE_PREFIX: ${{ env.AWS_RESOURCE_PREFIX }}
+      LEMMY_URL: ${{ env.LEMMY_URL }}
+      LEMMY_USER: ${{ env.LEMMY_USER }}
       LEMMY_PASS: ${{ secrets.LEMMY_PASS }}
 
     steps:
@@ -33,8 +32,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}
-          aws-region: ${{ secrets.AWS_DEPLOY_REGION }}
+          role-to-assume: ${{ env.AWS_DEPLOY_ROLE }}
+          aws-region: ${{ env.AWS_DEPLOY_REGION }}
 
       - name: Build and deploy
         run: |
