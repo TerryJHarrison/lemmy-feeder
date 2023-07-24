@@ -2,7 +2,7 @@
 Pull RSS/Atom feeds and post to a Lemmy community
 
 ## Deploying
-GHA workflow variables required:
+Required GHA workflow variables:
 - `AWS_DEPLOY_BUCKET` - S3 bucket name to use for SAM deploys
 - `AWS_DEPLOY_REGION` - AWS region to deploy resources to
 - `AWS_DEPLOY_ROLE` - AWS IAM role ARN for GitHub OIDC
@@ -10,7 +10,10 @@ GHA workflow variables required:
 - `LEMMY_URL` - Lemmy instance URL. No protocol, example: `lemmy.world`.
 - `LEMMY_USER` - Lemmy username (or email) to sign in and post with.
 
-GHA workflow secrets required:
+Optional GHA workflow variables:
+- `KNOWN_PAYWALLS` - Comma separated list of websites that have paywalls
+
+Required GHA workflow secrets:
 - `LEMMY_PASS` - Password for the Lemmy user.
 
 ## Running
