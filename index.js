@@ -54,7 +54,16 @@ exports.handler = async function(event) {
     let feed = await parser.parseURL(event.RSS_FEED);
     console.log("Populating from " + feed.title + " for last 8 hours");
     let postsToCreate = [];
+    let paywalls = process.env.KNOWN_PAYWALLS.split(",");
     feed.items.forEach(item => {
+        //Skip known paywalls
+        for(paywalls.forEach(paywall => {
+            if(item.link.includes(pawyall)){
+                item.link = "http://archive.is/newest/" + item.link;
+                break;
+            }
+        })
+        
         //Prevent reposts based on title
         if(!postLinks.includes(item.link)){
             //Create a post promise for each new entry
