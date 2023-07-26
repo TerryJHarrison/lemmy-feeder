@@ -59,7 +59,7 @@ exports.handler = async function(event) {
         //Skip known paywalls
         let isPaywallSkipped = false;
         paywalls.forEach(paywall => {
-            if(!isPaywallSkipped && item.link.includes(pawyall)){
+            if(!isPaywallSkipped && item.link.includes(paywall)){
                 item.link = "http://archive.is/newest/" + item.link;
                 isPaywallSkipped = true;
             }
