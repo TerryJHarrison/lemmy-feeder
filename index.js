@@ -57,12 +57,13 @@ exports.handler = async function(event) {
     let paywalls = process.env.KNOWN_PAYWALLS.split(",");
     feed.items.forEach(item => {
         //Skip known paywalls
-        for(paywalls.forEach(paywall => {
-            if(item.link.includes(pawyall)){
+        let isPaywallSkipped = false;
+        paywalls.forEach(paywall => {
+            if(!isPaywallSkipped && item.link.includes(pawyall)){
                 item.link = "http://archive.is/newest/" + item.link;
-                //TODO: no longer check for paywalls after updating link
+                isPaywallSkipped = true;
             }
-        })
+        });
         
         //Prevent reposts based on title
         if(!postLinks.includes(item.link)){
