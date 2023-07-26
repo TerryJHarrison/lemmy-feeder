@@ -11,6 +11,8 @@ Parameters:
     Type: String
   LemmyPass:
     Type: String
+  KnownPaywalls:
+    Type: String
     
 Resources:
   LemmyFeederFunction:
@@ -26,6 +28,7 @@ Resources:
           LEMMY_URL: !Ref LemmyURL
           LEMMY_USER: !Ref LemmyUser
           LEMMY_PASS: !Ref LemmyPass
+          KNOWN_PAYWALLS: !Ref KnownPaywalls
   LemmyFeederPermission:
     Type: AWS::Lambda::Permission
     Properties:
